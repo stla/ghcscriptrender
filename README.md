@@ -37,10 +37,12 @@ Available options:
 
 - `-p`: the package database, the same as the option `-package-db` of `ghc`.
 
+Once you get the txt output, you can convert it to highlighted html by using `node.js` with the [pygments library](https://github.com/pksunkara/pygments.js), or the Python command line [pygmentize](http://pygments.org/docs/cmdline/).
+
 
 ## Compilation
 
-- The compilation requires the libraries `optparse-applicative` and `MissingH`.
+- The module requires the libraries `optparse-applicative` and `MissingH`.
 
 - As it is given, it only works on Linux. For Windows, change the occurences of `"/tmp/..."` to another temporary directory.
 
@@ -78,12 +80,5 @@ The `-t md` option returns a block such as:
     25.0
     ```
 
-This markdown block of code is ready for conversion to highlighted html by using either
-
-- `node.js` with the [pygments library](https://github.com/pksunkara/pygments.js),
-
-- the Python command line [pygmentize](http://pygments.org/docs/cmdline/),
-
-- or [Pandoc](http://pandoc.org/demos.html). 
-
+This markdown block of code is ready to be processed by   [Pandoc](http://pandoc.org/demos.html). 
 This is [the output](http://htmlpreview.github.io/?https://raw.githubusercontent.com/stla/ghcscriptrender/master/tests/test_monoline_md_pandoc.html) of Pandoc using the option `--highlight-style haddock`. 
