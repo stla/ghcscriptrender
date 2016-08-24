@@ -18,7 +18,7 @@ Available options:
   -h,--help                Show this help text
   FILE                     The Haskell script
   -s,--singleoutputs       In case every output takes only one line
-  -n,--nooutputs           Don't include the outputs
+  -n,--nooutputs           Do not include the outputs
   -t,--type TYPE           Output type: html (default), txt, or md
   -f,--fragment            Generate a html block (for --type html)
   -p,--package-db package-database
@@ -55,7 +55,7 @@ Available options:
 
 ## The `md` (markdown) option
 
-The `-t md` option returns a block enclosed between `` ```haskell `` and `` ``` ``, such as:
+The `-t md` option returns a block such as:
 
     ```haskell
     > -- define a new type: 
