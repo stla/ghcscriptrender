@@ -59,6 +59,6 @@ main = execParser opts >>= renderScript
   where
     opts = info (helper <*> run)
       ( fullDesc
-     <> progDesc "Convert a Haskell script to html"
-     <> header "ghcitohtml - based on HsColour" )
+     <> progDesc "Convert a Haskell script to html or txt, including the outputs."
+     <> header "ghcscriptrender" )
 

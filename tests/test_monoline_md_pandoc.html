@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+  </style>
+</head>
+<body>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> <span class="co">-- define a new type: </span>
+<span class="fu">&gt;</span> <span class="kw">data</span> <span class="dt">Point</span> <span class="fu">=</span> <span class="dt">Point</span> <span class="dt">Float</span> <span class="dt">Float</span> <span class="kw">deriving</span> (<span class="dt">Show</span>)
+<span class="fu">&gt;</span> <span class="co">-- variable of type Point:</span>
+<span class="fu">&gt;</span> <span class="kw">let</span> point <span class="fu">=</span> (<span class="dt">Point</span> <span class="dv">3</span> <span class="dv">4</span>)
+<span class="fu">&gt;</span> point
+<span class="dt">Point</span> <span class="fl">3.0</span> <span class="fl">4.0</span>
+<span class="fu">&gt;</span> <span class="fu">:</span>t point
+<span class="ot">point ::</span> <span class="dt">Point</span>
+<span class="fu">&gt;</span> <span class="co">-- &#39;Point&#39; is like a function:</span>
+<span class="fu">&gt;</span> <span class="fu">:</span>t <span class="dt">Point</span>
+<span class="dt">Point</span><span class="ot"> ::</span> <span class="dt">Float</span> <span class="ot">-&gt;</span> <span class="dt">Float</span> <span class="ot">-&gt;</span> <span class="dt">Point</span>
+<span class="fu">&gt;</span> <span class="co">-- a function acting on &#39;Point&#39; variables:</span>
+<span class="fu">&gt;</span> <span class="fu">:</span>{
+<span class="fu">&gt;</span> <span class="kw">let</span><span class="ot"> squareNorm ::</span> <span class="dt">Point</span> <span class="ot">-&gt;</span> <span class="dt">Float</span>
+<span class="fu">&gt;</span>     squareNorm (<span class="dt">Point</span> x y) <span class="fu">=</span> x<span class="fu">^</span><span class="dv">2</span><span class="fu">+</span>y<span class="fu">^</span><span class="dv">2</span>
+<span class="fu">&gt;</span> <span class="fu">:</span>}
+<span class="fu">&gt;</span> squareNorm point
+<span class="fl">25.0</span></code></pre></div>
+</body>
+</html>
