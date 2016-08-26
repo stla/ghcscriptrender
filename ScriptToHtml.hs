@@ -3,6 +3,7 @@ module ScriptToHtml where
 import System.IO
 import System.Process (readProcess)
 import qualified Data.String.Utils as SU
+import Data.List (findIndices)
 import Data.IORef
 import CommonFunctions
 
@@ -40,6 +41,22 @@ promptInputs html i j = head ++ middle ++ end
                     where head = take i html
                           end =  drop (length html - j) html
                           middle = map (\x -> "<span class='prompt'>></span> " ++ x) $ (!! j).iterate init $ drop i html
+
+-- get html for a module
+moduleToHtml :: FilePath -> Bool -> IO(String)
+moduleToHtml hsfile fragment =
+  do
+    hscolourhtml <- readProcess "HsColour" [hsfile, "-css"] ""
+    let htmlInLines = SU.split "\n" hscolourhtml
+    let html0 = if fragment then init.init $ drop 9 htmlInLines else htmlInLines
+    let emptyLines = findIndices (=="") html0
+    let html1 = insertAtIndices emptyLines " " $ html0
+    let html2 = [x | x <- html1, not $ x == ""]
+    let html = SU.replace "<pre>" "<div class='sourceCode'><pre class='scriptHaskell'><code class='scriptHaskell'>" 
+                  $ SU.replace (if fragment then "</pre></body>" else "</pre>") "</code></pre></div>" 
+                    $ SU.join "\n" 
+                      $ html2
+    return ( html )
 
 
 -- ~~## Case multiline outputs ##~~ -- 

@@ -2,7 +2,7 @@ module Main where
 
 import Options.Applicative
 import Data.Monoid
-import ScriptToHtml (scriptToHtmlWithOutputs, scriptToHtmlWithMonoOutputs, scriptToHtmlNoOutputs)
+import ScriptToHtml (scriptToHtmlWithOutputs, scriptToHtmlWithMonoOutputs, scriptToHtmlNoOutputs, moduleToHtml)
 import ScriptToTxt (scriptToTxtWithOutputs, scriptToTxtWithMonoOutputs)
 
 
@@ -12,20 +12,22 @@ data Arguments = Arguments
   , nooutput :: Bool
   , filetype :: Maybe String
   , fragment :: Bool
+  , notscript :: Bool
   , packages :: Maybe String }
 
 renderScript :: Arguments -> IO()
-renderScript (Arguments infile False False Nothing fragment packages) = do scriptToHtmlWithOutputs infile fragment packages
-renderScript (Arguments infile True _ Nothing fragment packages) = do scriptToHtmlWithMonoOutputs infile fragment packages
-renderScript (Arguments infile False True Nothing fragment _) = do scriptToHtmlNoOutputs infile fragment
-renderScript (Arguments infile False False (Just "html") fragment packages) = do scriptToHtmlWithOutputs infile fragment packages
-renderScript (Arguments infile True _ (Just "html") fragment packages) = do scriptToHtmlWithMonoOutputs infile fragment packages
-renderScript (Arguments infile False True (Just "html") fragment _) = do scriptToHtmlNoOutputs infile fragment
-renderScript (Arguments infile False _ (Just "txt") _ packages) = do scriptToTxtWithOutputs infile False packages
-renderScript (Arguments infile True _ (Just "txt") _ packages) = do scriptToTxtWithMonoOutputs infile False packages
-renderScript (Arguments infile False _ (Just "md") _ packages) = do scriptToTxtWithOutputs infile True packages
-renderScript (Arguments infile True _ (Just "md") _ packages) = do scriptToTxtWithMonoOutputs infile True packages
-
+renderScript (Arguments infile False False Nothing fragment False packages) = do scriptToHtmlWithOutputs infile fragment packages
+renderScript (Arguments infile True _ Nothing fragment False packages) = do scriptToHtmlWithMonoOutputs infile fragment packages
+renderScript (Arguments infile False True Nothing fragment False _) = do scriptToHtmlNoOutputs infile fragment
+renderScript (Arguments infile False False (Just "html") fragment False packages) = do scriptToHtmlWithOutputs infile fragment packages
+renderScript (Arguments infile True _ (Just "html") fragment False packages) = do scriptToHtmlWithMonoOutputs infile fragment packages
+renderScript (Arguments infile False True (Just "html") fragment False _) = do scriptToHtmlNoOutputs infile fragment
+renderScript (Arguments infile False _ (Just "txt") _ _ packages) = do scriptToTxtWithOutputs infile False packages
+renderScript (Arguments infile True _ (Just "txt") _ _ packages) = do scriptToTxtWithMonoOutputs infile False packages
+renderScript (Arguments infile False _ (Just "md") _ _ packages) = do scriptToTxtWithOutputs infile True packages
+renderScript (Arguments infile True _ (Just "md") _ _ packages) = do scriptToTxtWithMonoOutputs infile True packages
+renderScript (Arguments infile _ _ _ fragment True _) = do r <- moduleToHtml infile fragment 
+                                                           putStrLn r
 run :: Parser Arguments
 run = Arguments
      <$> argument str 
@@ -48,6 +50,10 @@ run = Arguments
           ( long "fragment"
          <> short 'f'
          <> help "Generate a html block (for --type html)" )
+     <*> switch
+          ( long "module"
+         <> short 'm'
+         <> help "Render a module, not a script (for --type html)" )
      <*> ( optional $ strOption 
           ( metavar "package-database"
          <> long "package-db"
