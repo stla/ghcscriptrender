@@ -83,9 +83,9 @@ somewhere in the knit document.
 
 The `HsColour` executable must be in the system path (*i.e.* `Sys.which("HsColour")` must be `TRUE`).
 
-- `ghcscriptrender` option: `--fragment --singleoutputs`
+- `ghcscriptrender` options: `--fragment --singleoutputs`
 
-- chunk option: `echo=FALSE`, `results = 'asis'`
+- chunk options: `echo=FALSE`, `results = 'asis'`
 
 
 ```{r, engine.opts = '--fragment --singleoutputs', results = 'asis'}
@@ -105,9 +105,9 @@ somewhere in the knitr document, for example at the beginning.
 
 To use this option, set a syntax highlighting theme. Here we use haddock. 
 
-- `ghcscriptrender` option: `--type md --singleoutputs`
+- `ghcscriptrender` options: `--type md --singleoutputs`
 
-- chunk option: `echo=FALSE`, `results = 'asis'`
+- chunk options: `echo=FALSE`, `results = 'asis'`
 
 
 ```{r, engine.opts = '--type md --singleoutputs', results = 'asis'}
