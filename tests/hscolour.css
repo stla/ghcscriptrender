@@ -12,7 +12,7 @@
 	font-style: italic;
 }
 .hs-str, .hs-chr {
-	color: #ff2200;
+	color: #fb660a;
 }
 .hs-num {
 	color: #f0dfaf;
@@ -50,7 +50,6 @@ pre.scriptHaskell, code.scriptHaskell {
 	color: #efef8f;
 	display: block;
 	padding: 2px;
-	margin: 0 0 1px;
 }
 pre.scriptHaskell {
 	border: 1px solid #303030;
@@ -62,4 +61,5 @@ code.scriptHaskell {
 }
 .sourceCode, pre.scriptHaskell { 
 	overflow-x: auto; 
+	margin: 0 0 4px;
 }

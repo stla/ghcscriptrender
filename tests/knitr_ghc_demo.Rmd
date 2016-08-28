@@ -1,0 +1,130 @@
+---
+title: Testing ghcscriptrender in knitr
+date: 2016-08-28
+output: 
+  html_document: 
+    highlight: haddock
+---
+
+<link rel="stylesheet" href="hscolour.css">
+
+
+```{r setup, include=FALSE}
+## a small modification of the haskell engine provided by knitr:
+##   (to get rid of the option ':set +m')
+knitr::knit_engines$set(ghc = function (options) 
+                  {
+                    engine = options$engine
+                    f = basename(tempfile(engine, ".", ".txt"))
+                    writeLines(options$code, f)
+                    on.exit(unlink(f))
+                    code = paste(f, options$engine.opts)
+                    cmd = options$engine.path 
+                    out = if (options$eval) {
+                      message("running: ", cmd, " ", code)
+                      tryCatch(system2(cmd, code, stdout = TRUE, stderr = FALSE,
+                                       env = options$engine.env), error = function(e) {
+                                         if (!options$error)
+                                           stop(e)
+                                         paste("Error in running command", cmd)
+                                       })
+                    }
+                    else ""
+                    if (!options$error && !is.null(attr(out, "status"))) 
+                      stop(paste(out, collapse = "\n"))
+                    knitr::engine_output(options, options$code, out)
+                  }
+)
+## chunk options
+knitr::opts_chunk$set(engine = 'ghc', 
+                      engine.path = 'ghcscriptrender',
+                      echo = FALSE)
+```
+
+Set global chunk options:
+
+    knitr::opts_chunk$set(engine = 'ghc', 
+                      engine.path = 'ghcscriptrender',
+                      echo = FALSE)
+
+In the example below, we use the `ghcscriptrender` option `--singleoutputs` because every output returned by our script fits on one line.
+
+
+### The `txt` option
+
+- `ghcscriptrender` options: `--type txt --singleoutputs`
+
+- chunk options: `echo=FALSE`, `comment = NA`
+
+```{r, engine.opts = '--type txt --singleoutputs', comment=NA}
+let x = "hello" 
+reverse x
+let y = "world"
+x ++ " " ++ y
+```
+
+<style type="text/css">
+pre:not([class]) {
+    background-color: seaShell;
+}
+</style>
+
+The style can be changed inside the knitr document by writing
+
+    <style type="text/css">
+    pre:not([class]) {
+      background-color: ...;
+    }
+    </style>
+
+somewhere in the knit document.
+
+### The `html fragment` option
+
+The `HsColour` executable must be in the system path (*i.e.* `Sys.which("HsColour")` must be `TRUE`).
+
+- `ghcscriptrender` option: `--fragment --singleoutputs`
+
+- chunk option: `echo=FALSE`, `results = 'asis'`
+
+
+```{r, engine.opts = '--fragment --singleoutputs', results = 'asis'}
+let x = "hello" 
+reverse x
+let y = "world"
+x ++ " " ++ y
+```
+
+The style is controlled by a `css` stylesheet included here by writing
+
+    <link rel="stylesheet" href="hscolour.css">
+
+somewhere in the knitr document, for example at the beginning.
+
+### The `md` option
+
+To use this option, set a syntax highlighting theme. Here we use haddock. 
+
+- `ghcscriptrender` option: `--type md --singleoutputs`
+
+- chunk option: `echo=FALSE`, `results = 'asis'`
+
+
+```{r, engine.opts = '--type md --singleoutputs', results = 'asis'}
+let x = "hello" 
+reverse x
+let y = "world"
+x ++ " " ++ y
+```
+
+<style type='text/css'>
+  .haskell {background-color: white}
+</style>
+
+Use
+
+    <style type='text/css'>
+      .haskell {background-color: white}
+    </style>
+
+to control the background color. It is automatically set to blue if you use a theme which does not include its own background color.
