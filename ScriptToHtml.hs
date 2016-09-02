@@ -54,8 +54,9 @@ moduleToHtml hsfile fragment =
     let html2 = [x | x <- html1, not $ x == ""]
     let html = SU.replace "<pre>" "<div class='sourceCode'><pre class='scriptHaskell'><code class='scriptHaskell'>" 
                   $ SU.replace (if fragment then "</pre></body>" else "</pre>") "</code></pre></div>" 
-                    $ SU.join "\n" 
-                      $ html2
+                    $ SU.replace "<span class='hs-conop'>:</span><span class='hs-varid'>" "<span class='command'>:"
+                      $ SU.join "\n" 
+                        $ html2
     return ( html )
 
 
