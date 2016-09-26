@@ -4,6 +4,7 @@ module CommonFunctions where
 
 import System.Process (readProcess)
 import qualified Data.String.Utils as SU
+import Text.Regex.Posix ((=~))
 import Data.List (findIndices, findIndex, isInfixOf)
 import Data.Maybe (fromJust, isJust)
 
@@ -26,17 +27,20 @@ lineBelongsToMultiBlock i list = if isJust firstCBafter
                                      where firstOBbefore = firstOpeningBracketBefore i list
                                            firstCBafter = firstClosingBracketAfter i list
 
-prefixesToDetect = ["instance", "import ", "let ", "data ", "where ", "--", "{-#", ":s", ":u", ":l", ":m", ",", "<", "{", "}", "$", ")"]
+prefixesToDetect = ["instance", "import ", "data ", "where ", "--", "{-#", ":s", ":u", ":l", ":m", ",", "<", "{", "}", "$", ")"]
 
 beginByKeyWord :: String -> [String] -> Bool
 beginByKeyWord string keywords = foldr (||) False $ map (\x -> SU.startswith x string) (keywords ++ prefixesToDetect)
 
 isAction :: String -> Bool
-isAction string = "<-" `isInfixOf` string
+isAction string = ("<-" `isInfixOf` string) && (not $ string =~ "^\\[.+.|.+.\\]")
+
+isLetIn :: String -> Bool
+isLetIn string = string =~ "^let .+. in "
 
 isOutput :: [String] -> [Int]
 isOutput strings = findIndices (==False) tests
-                    where tests = map (\i -> ((isAction $ tstrings !! i) || (tstrings !! i) == "") || (beginByKeyWord ((tstrings !! i)) prefixesToDetect) || (lineBelongsToMultiBlock i tstrings)) [0..((length tstrings)-1)]
+                    where tests = map (\i -> (((SU.startswith "let " (tstrings !! i)) && (not $ isLetIn $ tstrings !! i)) || (isAction $ tstrings !! i) || (tstrings !! i) == "") || (beginByKeyWord ((tstrings !! i)) prefixesToDetect) || (lineBelongsToMultiBlock i tstrings)) [0..((length tstrings)-1)]
                           tstrings = map SU.lstrip strings
               
                           
