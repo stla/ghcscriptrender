@@ -1,0 +1,40 @@
+name:                ghcscriptrender
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/stla/ghcscriptrender#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Stéphane Laurent
+maintainer:          laurent_step@yahoo.fr
+copyright:           2017 Stéphane Laurent
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     CommonFunctions
+                     , ScriptToHtml
+                     , ScriptToTxt
+  build-depends:       base >= 4.7 && < 5
+                     , MissingH
+                     , directory
+                     , process
+                     , regex-posix
+  ghc-options:         -fwarn-unused-imports
+  default-language:    Haskell2010
+
+executable ghcscriptrender
+  hs-source-dirs:      src-commandline
+  main-is:             Main.hs
+  ghc-options:         -fwarn-unused-imports -O3 -optc-Os
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5
+                     , optparse-applicative
+                     , ghcscriptrender
+
+source-repository head
+  type:     git
+  location: https://github.com/stla/ghcscriptrender

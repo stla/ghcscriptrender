@@ -1,15 +1,21 @@
 -- file: CommonFunctions.hs
 --import System.IO
-module CommonFunctions where 
+module CommonFunctions where
 
-import System.Process (readProcess)
+import           Data.List         (findIndex, findIndices, isInfixOf)
+import           Data.Maybe        (fromJust, isJust)
 import qualified Data.String.Utils as SU
-import Text.Regex.Posix ((=~))
-import Data.List (findIndices, findIndex, isInfixOf)
-import Data.Maybe (fromJust, isJust)
+import           System.Directory  (getTemporaryDirectory)
+import           System.Process    (readProcess)
+import           Text.Regex.Posix  ((=~))
+
+temporaryFile :: String -> IO (FilePath)
+temporaryFile file = do
+  tmp <- getTemporaryDirectory
+  return $ tmp ++ file
+
 
 -- functions used to find lines generating an output
-
 firstClosingBracketAfter :: Int -> [String] -> Maybe Int
 firstClosingBracketAfter i list = if(isJust index) then Just $ (fromJust index) + length list1 else Nothing
                                      where (list1,list2) = splitAt i list
@@ -42,8 +48,8 @@ isOutput :: [String] -> [Int]
 isOutput strings = findIndices (==False) tests
                     where tests = map (\i -> (((SU.startswith "let " (tstrings !! i)) && (not $ isLetIn $ tstrings !! i)) || (isAction $ tstrings !! i) || (tstrings !! i) == "") || (beginByKeyWord ((tstrings !! i)) prefixesToDetect) || (lineBelongsToMultiBlock i tstrings)) [0..((length tstrings)-1)]
                           tstrings = map SU.lstrip strings
-              
-                          
+
+
 
 -- get the outputs of a script
 getGHCIoutputs :: FilePath -> Maybe String -> IO(String)
@@ -54,10 +60,10 @@ getGHCIoutputs hsfile packages =
 
 
 
--- read several files 
+-- read several files
 getFiles :: [FilePath] -> IO([[String]])
-getFiles files = 
-  do 
+getFiles files =
+  do
     mapM (\file -> fmap lines (readFile file)) files
 
 
@@ -68,9 +74,9 @@ insertAt n x xs = as ++ (x:bs)
                   where (as,bs) = splitAt n xs
 
 insertAtIndices :: [Int] -> a -> [a] -> [a]
-insertAtIndices indices element list | indices == [] = list 
+insertAtIndices indices element list | indices == [] = list
                                     | is == [] = x ++ list2
-                                    | otherwise = x ++ (insertAtIndices (map (\j -> j-(length(list1))) is) element list2)  
+                                    | otherwise = x ++ (insertAtIndices (map (\j -> j-(length(list1))) is) element list2)
                                         where x = insertAt i element list1
                                               (list1,list2) = splitAt i list
                                               (i:is) = indices
@@ -78,10 +84,8 @@ insertAtIndices indices element list | indices == [] = list
 insertAtIndices2 :: [Int] -> [a] -> [a] -> [a]
 insertAtIndices2 indices elements list | indices == [] = list
                                        | is == [] = x ++ list2
-                                       | otherwise = x ++ (insertAtIndices2 (map (\j -> j-(length(list1))) is) elements2 list2)  
+                                       | otherwise = x ++ (insertAtIndices2 (map (\j -> j-(length(list1))) is) elements2 list2)
                                           where x = insertAt i element1 list1
                                                 (list1,list2) = splitAt i list
                                                 (element1:elements2) = elements
                                                 (i:is) = indices
-
-
