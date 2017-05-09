@@ -1,5 +1,5 @@
-module ScriptToTxt where
-
+module ScriptToTxt 
+  where
 import           CommonFunctions
 import           Data.IORef
 import qualified Data.String.Utils as SU

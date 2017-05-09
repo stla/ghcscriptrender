@@ -1,5 +1,5 @@
-module ScriptToHtml where
-
+module ScriptToHtml 
+  where
 import           CommonFunctions
 import           Data.IORef
 import           Data.List         (findIndices)

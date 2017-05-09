@@ -1,17 +1,15 @@
--- file: CommonFunctions.hs
---import System.IO
-module CommonFunctions where
-
+module CommonFunctions 
+  where
 import           Data.List         (findIndex, findIndices, isInfixOf)
 import           Data.Maybe        (fromJust, isJust)
 import qualified Data.String.Utils as SU
-import           System.Directory  (getTemporaryDirectory)
 import           System.Process    (readProcess)
 import           Text.Regex.Posix  ((=~))
+import           GetTempDir
 
 temporaryFile :: String -> IO (FilePath)
 temporaryFile file = do
-  tmp <- getTemporaryDirectory
+  tmp <- getTempDir
   return $ tmp ++ file
 
 
