@@ -25,7 +25,8 @@ formatHsColourHtml html = SU.replace "<pre>" "<div class='sourceCode'><pre class
                               $ SU.replace "<span class='hs-conop'>:</span><span class='hs-varid'>" "<span class='command'>:"
                                 $ SU.replace "<span class='hs-conop'>:</span><span class='hs-layout'>{" "<span class='m'>:{"
                                   $ SU.replace "<span class='hs-conop'>:</span><span class='hs-layout'>}" "<span class='m'>:}"
-                                    $ html
+                                    $ SU.replace "<span class='hs-comment'>-</span>" "<span class='hs-varop'>-</span>"
+                                      $ html
 
 -- insert strings in html spans
 toSpan :: String -> String

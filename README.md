@@ -3,7 +3,7 @@ Render a Haskell script, including the outputs.
 
 For `html`rendering, this tool depends on the executable file `HsColour` provided by the [hscolour package](https://hackage.haskell.org/package/hscolour).
 
-## Usage 
+## Usage
 
 ```bash
 $ ghcscriptrender --help
@@ -40,13 +40,7 @@ Available options:
 Once you get the txt output, you can convert it to highlighted html by using `node.js` with the [pygments library](https://github.com/pksunkara/pygments.js), or the Python command line [pygmentize](http://pygments.org/docs/cmdline/).
 
 
-## Compilation
-
-- The module requires the libraries `optparse-applicative` and `MissingH`.
-
-- As it is given, it only works on Linux. For Windows, change the occurences of `"/tmp/..."` to another temporary directory.
-
-## Rendering of the html examples 
+## Rendering of the html examples
 
 - [Example 1](http://htmlpreview.github.io/?https://raw.githubusercontent.com/stla/ghcscriptrender/master/tests/test_monoline_nooutput.html) (no outputs)
 
@@ -60,7 +54,7 @@ Once you get the txt output, you can convert it to highlighted html by using `no
 The `-t md` option returns a block such as:
 
     ```haskell
-    > -- define a new type: 
+    > -- define a new type:
     > data Point = Point Float Float deriving (Show)
     > -- variable of type Point:
     > let point = (Point 3 4)
@@ -80,5 +74,5 @@ The `-t md` option returns a block such as:
     25.0
     ```
 
-This markdown block of code is ready to be processed by   [Pandoc](http://pandoc.org/demos.html). 
-This is [the output](http://htmlpreview.github.io/?https://raw.githubusercontent.com/stla/ghcscriptrender/master/tests/test_monoline_md_pandoc.html) of Pandoc using the option `--highlight-style haddock`. 
+This markdown block of code is ready to be processed by [Pandoc](http://pandoc.org/demos.html).
+This is [the output](http://htmlpreview.github.io/?https://raw.githubusercontent.com/stla/ghcscriptrender/master/tests/test_monoline_md_pandoc.html) of Pandoc using the option `--highlight-style haddock`.

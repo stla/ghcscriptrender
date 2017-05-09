@@ -10,30 +10,28 @@ output:
 
 
 ```{r setup, include=FALSE}
-## a small modification of the haskell engine provided by knitr:
-##   (to get rid of the option ':set +m')
-knitr::knit_engines$set(ghc = function (options) 
-                  {
-                    engine = options$engine
-                    f = basename(tempfile(engine, ".", ".txt"))
-                    writeLines(options$code, f)
-                    on.exit(unlink(f))
-                    code = paste(f, options$engine.opts)
-                    cmd = options$engine.path 
-                    out = if (options$eval) {
-                      message("running: ", cmd, " ", code)
-                      tryCatch(system2(cmd, code, stdout = TRUE, stderr = FALSE,
-                                       env = options$engine.env), error = function(e) {
-                                         if (!options$error)
-                                           stop(e)
-                                         paste("Error in running command", cmd)
-                                       })
-                    }
-                    else ""
-                    if (!options$error && !is.null(attr(out, "status"))) 
-                      stop(paste(out, collapse = "\n"))
-                    knitr::engine_output(options, options$code, out)
-                  }
+knitr::knit_engines$set(ghc = function (options)
+{
+  engine = options$engine
+  f = basename(tempfile(engine, ".", ".txt"))
+  writeLines(options$code, f)
+  on.exit(unlink(f))
+  code = paste(f, options$engine.opts)
+  cmd = options$engine.path
+  out = if (options$eval) {
+    message("running: ", cmd, " ", code)
+    tryCatch(system2(cmd, code, stdout = TRUE, stderr = FALSE,
+                     env = options$engine.env), error = function(e) {
+                       if (!options$error)
+                         stop(e)
+                       paste("Error in running command", cmd)
+                     })
+  }
+  else ""
+  if (!options$error && !is.null(attr(out, "status")))
+    stop(paste(out, collapse = "\n"))
+  knitr::engine_output(options, options$code, out)
+}
 )
 ## chunk options
 knitr::opts_chunk$set(engine = 'ghc', 

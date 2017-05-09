@@ -1,2 +1,5 @@
 .stack-work/
 *.json
+blog/*
+!blog/owen.Rmd
+tests/knitr_test*
